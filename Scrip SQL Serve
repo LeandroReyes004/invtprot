@@ -1,0 +1,66 @@
+-- Tabla: equipos
+CREATE TABLE equipos (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    tipo_equipo VARCHAR(20) DEFAULT 'PC',
+    codigo_qr VARCHAR(20) NULL,
+    service_tag VARCHAR(50) NULL,
+    imei VARCHAR(50) NULL,
+    numero_linea VARCHAR(20) NULL,
+    anydesk_id VARCHAR(20) NULL,
+    ip_address VARCHAR(20) NULL,
+    nombre_equipo VARCHAR(50) NULL,
+    usuario VARCHAR(100) NULL,
+    departamento VARCHAR(50) NULL,
+    marca VARCHAR(50) NULL,
+    modelo VARCHAR(100) NULL,
+    sistema_operativo VARCHAR(50) NULL,
+    procesador VARCHAR(100) NULL,
+    memoria VARCHAR(20) NULL,
+    disco_tecnologia VARCHAR(20) NULL,
+    disco_tamano VARCHAR(20) NULL,
+    tiene_monitor BIT DEFAULT 0,
+    monitor_datos VARCHAR(150) NULL,
+    fecha_registro DATETIME DEFAULT GETDATE(),
+    estado VARCHAR(20) DEFAULT 'Operativo'
+);
+
+-- Tabla: historial_errores
+CREATE TABLE historial_errores (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    equipo_id INT NULL,
+    fecha_reporte DATE NULL,
+    falla_reportada TEXT NULL,
+    solucion_aplicada TEXT NULL,
+    costo DECIMAL(10,2) DEFAULT 0.00,
+    tecnico VARCHAR(50) NULL
+);
+
+-- Tabla: insumos
+CREATE TABLE insumos (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    tipo VARCHAR(50) NULL,
+    stock_actual INT DEFAULT 0,
+    stock_minimo INT DEFAULT 5,
+    modelo_compatible VARCHAR(100) NULL
+);
+
+-- Tabla: movimientos_insumos
+CREATE TABLE movimientos_insumos (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    insumo_id INT NULL,
+    equipo_id INT NULL,
+    tipo_movimiento VARCHAR(10) CHECK (tipo_movimiento IN ('ENTRADA', 'SALIDA')) NULL,
+    cantidad INT NULL,
+    usuario_registro VARCHAR(50) NULL,
+    fecha DATETIME DEFAULT GETDATE()
+);
+
+-- Tabla: usuarios
+CREATE TABLE usuarios (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    usuario VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    nombre VARCHAR(100) NULL,
+    rol VARCHAR(20) DEFAULT 'Tecnico'
+);
