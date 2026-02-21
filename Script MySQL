@@ -1,0 +1,74 @@
+-- Tabla: equipos
+CREATE TABLE equipos (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    tipo_equipo VARCHAR(20) DEFAULT 'PC' COLLATE utf8mb4_unicode_ci,
+    codigo_qr VARCHAR(20) NULL COLLATE utf8mb4_unicode_ci,
+    service_tag VARCHAR(50) NULL COLLATE utf8mb4_unicode_ci,
+    imei VARCHAR(50) NULL COLLATE utf8mb4_unicode_ci,
+    numero_linea VARCHAR(20) NULL COLLATE utf8mb4_unicode_ci,
+    anydesk_id VARCHAR(20) NULL COLLATE utf8mb4_unicode_ci,
+    ip_address VARCHAR(20) NULL COLLATE utf8mb4_unicode_ci,
+    nombre_equipo VARCHAR(50) NULL COLLATE utf8mb4_unicode_ci,
+    usuario VARCHAR(100) NULL COLLATE utf8mb4_unicode_ci,
+    departamento VARCHAR(50) NULL COLLATE utf8mb4_unicode_ci,
+    marca VARCHAR(50) NULL COLLATE utf8mb4_unicode_ci,
+    modelo VARCHAR(100) NULL COLLATE utf8mb4_unicode_ci,
+    sistema_operativo VARCHAR(50) NULL COLLATE utf8mb4_unicode_ci,
+    procesador VARCHAR(100) NULL COLLATE utf8mb4_unicode_ci,
+    memoria VARCHAR(20) NULL COLLATE utf8mb4_unicode_ci,
+    disco_tecnologia VARCHAR(20) NULL COLLATE utf8mb4_unicode_ci,
+    disco_tamano VARCHAR(20) NULL COLLATE utf8mb4_unicode_ci,
+    tiene_monitor TINYINT(1) DEFAULT 0,
+    monitor_datos VARCHAR(150) NULL COLLATE utf8mb4_unicode_ci,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    estado VARCHAR(20) DEFAULT 'Operativo' COLLATE utf8mb4_unicode_ci,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabla: historial_errores
+CREATE TABLE historial_errores (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    equipo_id INT(11) NULL,
+    fecha_reporte DATE NULL,
+    falla_reportada TEXT NULL COLLATE utf8mb4_unicode_ci,
+    solucion_aplicada TEXT NULL COLLATE utf8mb4_unicode_ci,
+    costo DECIMAL(10,2) DEFAULT 0.00,
+    tecnico VARCHAR(50) NULL COLLATE utf8mb4_unicode_ci,
+    PRIMARY KEY (id),
+    KEY (equipo_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabla: insumos
+CREATE TABLE insumos (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL COLLATE utf8mb4_unicode_ci,
+    tipo VARCHAR(50) NULL COLLATE utf8mb4_unicode_ci,
+    stock_actual INT(11) DEFAULT 0,
+    stock_minimo INT(11) DEFAULT 5,
+    modelo_compatible VARCHAR(100) NULL COLLATE utf8mb4_unicode_ci,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabla: movimientos_insumos
+CREATE TABLE movimientos_insumos (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    insumo_id INT(11) NULL,
+    equipo_id INT(11) NULL,
+    tipo_movimiento ENUM('ENTRADA', 'SALIDA') NULL COLLATE utf8mb4_unicode_ci,
+    cantidad INT(11) NULL,
+    usuario_registro VARCHAR(50) NULL COLLATE utf8mb4_unicode_ci,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY (insumo_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabla: usuarios
+CREATE TABLE usuarios (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    usuario VARCHAR(50) NOT NULL COLLATE utf8mb4_unicode_ci,
+    password VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci,
+    nombre VARCHAR(100) NULL COLLATE utf8mb4_unicode_ci,
+    rol VARCHAR(20) DEFAULT 'Tecnico' COLLATE utf8mb4_unicode_ci,
+    PRIMARY KEY (id),
+    UNIQUE KEY (usuario)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
